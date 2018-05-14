@@ -14,23 +14,23 @@ import qualified Sets
 data FiniteSet a = FS [a]
 
 isEmpty :: FiniteSet a -> Bool
-isEmpty (FS []) = undefined
-isEmpty _ = undefined
+isEmpty (FS []) = True
+isEmpty _ = False
 
 contains :: Eq a => FiniteSet a -> a -> Bool
-contains (FS xs) x = undefined
+contains (FS xs) x = x `elem` xs
 
 empty :: FiniteSet a
-empty = undefined
+empty = FS []
 
 insert :: Ord a => FiniteSet a -> a -> FiniteSet a
-insert s x = undefined
+insert s x = union s (FS [x])
 
 union :: Ord a => FiniteSet a -> FiniteSet a -> FiniteSet a
-union (FS xs) (FS ys) = undefined
+union (FS xs) (FS ys) = FS (nub (sort (xs ++ ys)))
 
 intersection :: Eq a => FiniteSet a -> FiniteSet a -> FiniteSet a
-intersection (FS xs) (FS ys) = undefined
+intersection (FS xs) (FS ys) = FS (filter (\x -> x `elem` ys) xs)
 
 toSet :: Eq a => FiniteSet a -> Sets.Set a
-toSet (FS xs) = undefined
+toSet (FS xs) = Sets.Set (null xs) (\x -> x `elem` xs)
