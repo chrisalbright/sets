@@ -2,22 +2,32 @@ module Sets where
 
 data Set a = Set {
   isEmpty :: Bool,
-  contains :: a -> Bool,
-  insert :: a -> Set a,
-  union :: Set a -> Set a
+  contains :: a -> Bool
   }
 
 emptySet :: Set a
-emptySet = undefined
+emptySet = Set {
+  isEmpty = True,
+  contains = \a -> False
+}
 
 totalSet :: Set a
-totalSet = undefined
+totalSet = Set {
+  isEmpty = False,
+  contains = \a -> True
+}
 
-insertedSet :: Set a -> a -> Set a
-insertedSet x s = undefined
+insert :: Eq a => Set a -> a -> Set a
+insert s x = Set {
+  isEmpty = False,
+  contains = \a -> (contains s a) || a == x
+}
 
-unionedSet :: Set a -> Set a -> Set a
-unionedSet s1 s2 = undefined
+union :: Set a -> Set a -> Set a
+union s1 s2 = Set {
+  isEmpty = isEmpty s1 && isEmpty s2,
+  contains = \a -> contains s1 a || contains s2 a
+}
 
 main :: IO ()
 main = do
@@ -25,7 +35,10 @@ main = do
                               `union` (emptySet `insert` 1)
                               `insert` 5
 
-  let evens = undefined
+  let evens = Set {
+    isEmpty = False,
+    contains = \a -> (mod a 2) == 0
+  }
 
   putStrLn ("oneThreeFive contains 4: " ++ show (oneThreeFive `contains` 4))
   putStrLn ("evens contains 4: " ++ show (evens `contains` 4))
